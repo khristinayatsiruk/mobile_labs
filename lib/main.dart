@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'screens/login_screen.dart';
-import 'screens/register_screen.dart';
-import 'screens/home_screen.dart';
-import 'screens/profile_screen.dart';
+import 'package:luna_app/screens/home_screen.dart';
+import 'package:luna_app/screens/login_screen.dart';
+import 'package:luna_app/screens/profile_screen.dart';
+import 'package:luna_app/screens/register_screen.dart';
 
 void main() => runApp(const LunaApp());
 

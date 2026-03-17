@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../components/custom_button.dart';
+import 'package:luna_app/components/custom_button.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -7,31 +7,31 @@ class ProfileScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Профіль")),
+      appBar: AppBar(title: const Text('Профіль')),
       body: Padding(
-        padding: const EdgeInsets.all(24.0),
+        padding: const EdgeInsets.all(24),
         child: Column(
           children: [
             const CircleAvatar(
                 radius: 40,
                 backgroundColor: Colors.black,
-                child: Icon(Icons.person, color: Colors.white)),
+                child: Icon(Icons.person, color: Colors.white),),
             const SizedBox(height: 16),
-            const Text("Користувач Luna",
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+            const Text('Користувач Luna',
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
             const Spacer(),
             const Divider(),
-            ListTile(
-                title: const Text("Налаштування"),
-                trailing: const Icon(Icons.arrow_forward_ios, size: 16)),
-            ListTile(
-                title: const Text("Допомога"),
-                trailing: const Icon(Icons.arrow_forward_ios, size: 16)),
+            const ListTile(
+                title: Text('Налаштування'),
+                trailing: Icon(Icons.arrow_forward_ios, size: 16),),
+            const ListTile(
+                title: Text('Допомога'),
+                trailing: Icon(Icons.arrow_forward_ios, size: 16),),
             const SizedBox(height: 40),
             CustomButton(
-                text: "Вийти",
+                text: 'Вийти',
                 color: Colors.redAccent,
-                onPressed: () => Navigator.pushReplacementNamed(context, '/')),
+                onPressed: () => Navigator.pushReplacementNamed(context, '/'),),
           ],
         ),
       ),

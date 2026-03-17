@@ -5,7 +5,7 @@ class CustomTextField extends StatelessWidget {
   final bool isPassword;
 
   const CustomTextField(
-      {super.key, required this.hint, this.isPassword = false});
+      {required this.hint, super.key, this.isPassword = false,});
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +19,7 @@ class CustomTextField extends StatelessWidget {
           fillColor: Colors.grey[100],
           border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(8),
-              borderSide: BorderSide.none),
+              borderSide: BorderSide.none,),
           contentPadding: const EdgeInsets.all(16),
         ),
       ),
