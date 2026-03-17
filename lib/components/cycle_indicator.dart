@@ -14,8 +14,13 @@ class CycleCard extends StatelessWidget {
         padding: const EdgeInsets.all(16),
         child: Column(
           children: [
-            Text(title,
-                style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),),
+            Text(
+              title,
+              style: const TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
             const SizedBox(height: 8),
             Text(value, style: const TextStyle(fontSize: 20)),
           ],
