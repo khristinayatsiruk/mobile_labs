@@ -18,7 +18,7 @@ class LunaApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/': (context) => const LoginScreen(),
-        '/register': (context) => const RegisterScreen(),
+        '/register': (context) => const RegistrationScreen(),
         '/home': (context) => const HomeScreen(),
         '/profile': (context) => const ProfileScreen(),
       },
