@@ -1,3 +1,4 @@
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:luna_app/components/custom_button.dart';
 import 'package:luna_app/components/custom_textfield.dart';
@@ -13,23 +14,31 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-
   final AuthRepository _authRepository = AuthRepository();
 
+  // Об'єднана функція входу з перевіркою мережі
   void _handleLogin() async {
+    // 1. Перевірка підключення до Інтернету
+    final connectivityResult = await Connectivity().checkConnectivity();
+    if (connectivityResult.contains(ConnectivityResult.none)) {
+      _showError('Відсутнє підключення до інтернету!');
+      return;
+    }
+
     final email = _emailController.text.trim();
     final password = _passwordController.text.trim();
 
+    // 2. Валідація полів
     if (email.isEmpty || password.isEmpty) {
       _showError('Будь ласка, заповніть усі поля');
       return;
     }
 
+    // 3. Спроба входу
     final user = await _authRepository.getUserByEmail(email);
 
     if (user != null && user.password == password) {
       await _authRepository.setCurrentUser(email);
-
       if (mounted) {
         Navigator.pushReplacementNamed(context, '/home');
       }
@@ -81,31 +90,21 @@ class _LoginScreenState extends State<LoginScreen> {
                 style: TextStyle(fontSize: 16, color: Colors.grey),
               ),
               const SizedBox(height: 40),
-
-              // Поле Email
               CustomTextField(
                 hint: 'Email',
                 controller: _emailController,
               ),
-
-              // Поле Пароль
               CustomTextField(
                 hint: 'Пароль',
                 isPassword: true,
                 controller: _passwordController,
               ),
-
               const SizedBox(height: 32),
-
-              // Кнопка входу
               CustomButton(
                 text: 'Увійти',
                 onPressed: _handleLogin,
               ),
-
               const SizedBox(height: 16),
-
-              // Перехід на реєстрацію
               Center(
                 child: TextButton(
                   onPressed: () => Navigator.pushNamed(context, '/register'),
