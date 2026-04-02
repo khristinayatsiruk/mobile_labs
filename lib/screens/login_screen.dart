@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:luna_app/components/custom_button.dart';
 import 'package:luna_app/components/custom_textfield.dart';
-import 'package:luna_app/models/user_model.dart'; // Імпортуємо модель
-import 'package:luna_app/repositories/auth_repository.dart'; // Імпортуємо репозиторій
+import 'package:luna_app/repositories/auth_repository.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -12,42 +11,33 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  // Контролери для зчитування тексту з полів
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
-  // Створюємо екземпляр репозиторію для роботи з пам'яттю
   final AuthRepository _authRepository = AuthRepository();
 
-  // Основна функція входу
   void _handleLogin() async {
     final email = _emailController.text.trim();
     final password = _passwordController.text.trim();
 
-    // 1. Валідація на порожні поля
     if (email.isEmpty || password.isEmpty) {
       _showError('Будь ласка, заповніть усі поля');
       return;
     }
 
-    // 2. Отримуємо дані користувача, які ми зберегли при реєстрації
-    final User? savedUser = await _authRepository.getUser();
+    final user = await _authRepository.getUserByEmail(email);
 
-    // 3. Перевіряємо логіку (Business Logic)
-    if (savedUser != null &&
-        savedUser.email == email &&
-        savedUser.password == password) {
-      // Якщо дані збігаються — переходимо на головну
+    if (user != null && user.password == password) {
+      await _authRepository.setCurrentUser(email);
+
       if (mounted) {
         Navigator.pushReplacementNamed(context, '/home');
       }
     } else {
-      // Якщо юзера немає або пароль не той
       _showError('Невірний email або пароль. Спробуйте ще раз!');
     }
   }
 
-  // Зручний метод для показу помилок
   void _showError(String message) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
@@ -60,7 +50,6 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   void dispose() {
-    // Обов'язково очищуємо пам'ять (вимога лаби про ресурси)
     _emailController.dispose();
     _passwordController.dispose();
     super.dispose();

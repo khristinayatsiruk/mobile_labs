@@ -20,16 +20,17 @@ class _ProfileScreenState extends State<ProfileScreen> {
   }
 
   void _loadUserData() async {
-    final user = await _authRepository.getUser();
-    setState(() {
-      _currentUser = user;
-    });
+    final user = await _authRepository.getCurrentUser();
+    if (user != null) {
+      setState(() {
+        _currentUser = user;
+      });
+    }
   }
 
   void _logout() async {
     await _authRepository.logout();
     if (mounted) {
-      // Очищуємо весь стек екранів і повертаємось на Логін
       Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
     }
   }
