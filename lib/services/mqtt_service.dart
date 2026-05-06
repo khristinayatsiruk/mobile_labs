@@ -21,7 +21,9 @@ class MqttService {
     // Створюємо клієнта. Для Web обов'язково додаємо ws:// та /mqtt
     final String url = 'ws://$currentHost/mqtt';
     client = MqttBrowserClient(
-        url, 'luna_web_${DateTime.now().millisecondsSinceEpoch}');
+      url,
+      'luna_web_${DateTime.now().millisecondsSinceEpoch}',
+    );
 
     // Налаштування для WebSockets
     client!.port = 8000;

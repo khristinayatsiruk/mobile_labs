@@ -35,7 +35,8 @@ class _HomeScreenState extends State<HomeScreen> {
   Future<void> _loadSymptoms() async {
     final prefs = await SharedPreferences.getInstance();
     setState(
-        () => _symptoms = prefs.getStringList('user_symptoms') ?? ['Відсутні']);
+      () => _symptoms = prefs.getStringList('user_symptoms') ?? ['Відсутні'],
+    );
   }
 
   @override
@@ -43,8 +44,10 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: const Text('Luna',
-            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold)),
+        title: const Text(
+          'Luna',
+          style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold),
+        ),
         backgroundColor: Colors.white,
         elevation: 0,
       ),
@@ -57,8 +60,10 @@ class _HomeScreenState extends State<HomeScreen> {
             const SizedBox(height: 24),
             _buildMqttCard(),
             const SizedBox(height: 24),
-            const Text('Поради Luna (API)',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+            const Text(
+              'Поради Luna (API)',
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
             const SizedBox(height: 12),
             FutureBuilder<List<dynamic>>(
               future: ApiService.getTips(),
@@ -89,8 +94,10 @@ class _HomeScreenState extends State<HomeScreen> {
               },
             ),
             const SizedBox(height: 24),
-            const Text('Ваші симптоми',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+            const Text(
+              'Ваші симптоми',
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
             ..._symptoms.map((s) => Card(child: ListTile(title: Text(s)))),
           ],
         ),
@@ -101,23 +108,33 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget _buildMqttCard() => Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-            color: Colors.blue[50], borderRadius: BorderRadius.circular(12)),
-        child: Row(children: [
-          const Icon(Icons.thermostat, color: Colors.blue),
-          const SizedBox(width: 16),
-          Text('$_temperature°C',
-              style:
-                  const TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
-        ]),
+          color: Colors.blue[50],
+          borderRadius: BorderRadius.circular(12),
+        ),
+        child: Row(
+          children: [
+            const Icon(Icons.thermostat, color: Colors.blue),
+            const SizedBox(width: 16),
+            Text(
+              '$_temperature°C',
+              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            ),
+          ],
+        ),
       );
 
   Widget _buildCycleCard() => Container(
         width: double.infinity,
         padding: const EdgeInsets.all(32),
         decoration: BoxDecoration(
-            color: Colors.pink[50], borderRadius: BorderRadius.circular(16)),
+          color: Colors.pink[50],
+          borderRadius: BorderRadius.circular(16),
+        ),
         child: const Center(
-            child: Text('День 12',
-                style: TextStyle(fontSize: 40, color: Colors.pink))),
+          child: Text(
+            'День 12',
+            style: TextStyle(fontSize: 40, color: Colors.pink),
+          ),
+        ),
       );
 }
