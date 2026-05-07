@@ -58,7 +58,7 @@ class ProfileScreen extends StatelessWidget {
 
   void _showEditNameDialog(BuildContext context, String currentName) {
     final controller = TextEditingController(text: currentName);
-    showDialog(
+    showDialog<void>(
       context: context,
       builder: (diagContext) => AlertDialog(
         title: const Text("Змінити ім'я"),

@@ -35,7 +35,7 @@ class _HomeScreenState extends State<HomeScreen> {
     String? initialValue,
   }) {
     final controller = TextEditingController(text: initialValue);
-    showDialog(
+    showDialog<void>(
       context: context,
       builder: (diagContext) => AlertDialog(
         title: Text(index == null ? 'Додати симптом' : 'Редагувати симптом'),
