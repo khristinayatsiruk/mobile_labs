@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:luna_app/components/custom_button.dart';
 import 'package:luna_app/components/custom_textfield.dart';
 import 'package:luna_app/models/user_model.dart';
@@ -16,39 +17,26 @@ class _RegistrationScreenState extends State<RegistrationScreen> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
-  // Створюємо екземпляр нашого репозиторію
-  final AuthRepository _authRepository = AuthRepository();
-
   void _register() async {
     final name = _nameController.text.trim();
     final email = _emailController.text.trim();
     final password = _passwordController.text.trim();
 
-    // ВАЛІДАЦІЯ (вимога лаби)
     if (name.isEmpty || email.isEmpty || password.isEmpty) {
       _showError('Заповніть усі поля!');
       return;
     }
-    if (!email.contains('@')) {
-      _showError('Некоректний Email!');
-      return;
-    }
-    if (password.length < 6) {
-      _showError('Пароль має бути не менше 6 символів!');
-      return;
-    }
 
-    // Створюємо модель користувача
     final newUser = User(name: name, email: email, password: password);
 
-    // Зберігаємо в локальне сховище
-    await _authRepository.saveUser(newUser);
+    // ВАЖЛИВО: Отримуємо той самий єдиний екземпляр репозиторію
+    await context.read<AuthRepository>().saveUser(newUser);
 
     if (mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Реєстрація успішна! Тепер увійдіть.')),
+        const SnackBar(content: Text('Реєстрація успішна!')),
       );
-      Navigator.pop(context); // Повертаємось на екран логіна
+      Navigator.pop(context);
     }
   }
 
