@@ -29,8 +29,13 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
+  flutter_bloc: ^8.1.0
   flutter:
     sdk: flutter
+  my_flashlight_plugin:
+    git:
+      url: https://github.com/khristinayatsiruk/my_flashlight_plugin.git
+      ref: main
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

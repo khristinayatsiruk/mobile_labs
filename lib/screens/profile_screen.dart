@@ -1,107 +1,81 @@
 import 'package:flutter/material.dart';
-import 'package:luna_app/models/user_model.dart';
-import 'package:luna_app/repositories/auth_repository.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:luna_app/logic/profile_cubit.dart';
 
-class ProfileScreen extends StatefulWidget {
+class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
-
-  @override
-  State<ProfileScreen> createState() => _ProfileScreenState();
-}
-
-class _ProfileScreenState extends State<ProfileScreen> {
-  User? _currentUser;
-  final AuthRepository _authRepository = AuthRepository();
-
-  @override
-  void initState() {
-    super.initState();
-    _loadUserData();
-  }
-
-  Future<void> _loadUserData() async {
-    final user = await _authRepository.getCurrentUser();
-    if (user != null) {
-      setState(() {
-        _currentUser = user;
-      });
-    }
-  }
-
-  void _showLogoutDialog() {
-    showDialog<void>(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Вихід'),
-        content: const Text('Ви впевнені, що хочете вийти з акаунта?'),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(context),
-            child: const Text('Скасувати'),
-          ),
-          TextButton(
-            onPressed: () async {
-              await _authRepository.logout();
-              if (mounted) {
-                // Повертаємось на логін і чистимо історію екранів
-                Navigator.pushNamedAndRemoveUntil(
-                  // ignore: use_build_context_synchronously
-                  context,
-                  '/',
-                  (route) => false,
-                );
-              }
-            },
-            child: const Text('Вийти', style: TextStyle(color: Colors.red)),
-          ),
-        ],
-      ),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Мій Профіль')),
-      body: Center(
-        child: _currentUser == null
-            ? const CircularProgressIndicator()
-            : Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Icon(
-                    Icons.account_circle,
-                    size: 100,
-                    color: Colors.pinkAccent,
+      body: BlocBuilder<ProfileCubit, ProfileState>(
+        builder: (context, state) {
+          if (state.isLoading) {
+            return const Center(child: CircularProgressIndicator());
+          }
+
+          return Padding(
+            padding: const EdgeInsets.all(20),
+            child: Column(
+              children: [
+                const CircleAvatar(
+                  radius: 50,
+                  backgroundColor: Colors.pink,
+                  child: Icon(Icons.person, size: 50, color: Colors.white),
+                ),
+                const SizedBox(height: 20),
+                ListTile(
+                  title: const Text("Ім'я"),
+                  subtitle: Text(state.name),
+                  trailing: IconButton(
+                    icon: const Icon(Icons.edit),
+                    onPressed: () => _showEditNameDialog(context, state.name),
                   ),
-                  const SizedBox(height: 20),
-                  Text(
-                    "Ім'я: ${_currentUser!.name}",
-                    style: const TextStyle(
-                      fontSize: 22,
-                      fontWeight: FontWeight.bold,
-                    ),
+                ),
+                ListTile(
+                  title: const Text('Email'),
+                  subtitle: Text(state.email),
+                ),
+                const Spacer(),
+                ElevatedButton(
+                  onPressed: () => Navigator.pushReplacementNamed(context, '/'),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.redAccent,
                   ),
-                  const SizedBox(height: 8),
-                  Text(
-                    'Email: ${_currentUser!.email}',
-                    style: const TextStyle(fontSize: 16, color: Colors.grey),
+                  child: const Text(
+                    'Вийти',
+                    style: TextStyle(color: Colors.white),
                   ),
-                  const SizedBox(height: 40),
-                  ElevatedButton(
-                    onPressed: _showLogoutDialog, // ВИПРАВЛЕНО: без дужок
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.red[50],
-                      foregroundColor: Colors.red,
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 40,
-                        vertical: 15,
-                      ),
-                    ),
-                    child: const Text('Вийти з акаунта'),
-                  ),
-                ],
-              ),
+                ),
+              ],
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  void _showEditNameDialog(BuildContext context, String currentName) {
+    final controller = TextEditingController(text: currentName);
+    showDialog<void>(
+      context: context,
+      builder: (diagContext) => AlertDialog(
+        title: const Text("Змінити ім'я"),
+        content: TextField(controller: controller),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(diagContext),
+            child: const Text('Скасувати'),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              context.read<ProfileCubit>().updateName(controller.text);
+              Navigator.pop(diagContext);
+            },
+            child: const Text('Зберегти'),
+          ),
+        ],
       ),
     );
   }

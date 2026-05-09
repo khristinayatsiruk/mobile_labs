@@ -5,7 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ApiService {
-  static const baseUrl = 'http://192.168.0.106:5002/api';
+  static const baseUrl = 'http://172.20.10.4:5002/api';
 
   static Future<List<dynamic>> getTips() async {
     final prefs = await SharedPreferences.getInstance();
