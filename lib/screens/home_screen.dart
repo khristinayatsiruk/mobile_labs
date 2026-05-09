@@ -136,18 +136,21 @@ class _HomeScreenState extends State<HomeScreen> {
                   }
                   return Column(
                     children: state.tips
-                        .map((tip) => Card(
-                              color: Colors.pink[50],
-                              margin: const EdgeInsets.only(bottom: 8),
-                              child: ListTile(
-                                leading: const Icon(Icons.auto_awesome,
-                                    color: Colors.pink),
-                                title:
-                                    Text(tip['title']?.toString() ?? 'Порада'),
-                                subtitle:
-                                    Text(tip['description']?.toString() ?? ''),
+                        .map(
+                          (tip) => Card(
+                            color: Colors.pink[50],
+                            margin: const EdgeInsets.only(bottom: 8),
+                            child: ListTile(
+                              leading: const Icon(
+                                Icons.auto_awesome,
+                                color: Colors.pink,
                               ),
-                            ))
+                              title: Text(tip['title']?.toString() ?? 'Порада'),
+                              subtitle:
+                                  Text(tip['description']?.toString() ?? ''),
+                            ),
+                          ),
+                        )
                         .toList(),
                   );
                 },
@@ -172,34 +175,43 @@ class _HomeScreenState extends State<HomeScreen> {
                     children: symptoms
                         .asMap()
                         .entries
-                        .map((entry) => Card(
-                              margin: const EdgeInsets.only(bottom: 8),
-                              child: ListTile(
-                                leading: const Icon(Icons.bubble_chart,
-                                    color: Colors.pinkAccent),
-                                title: Text(entry.value),
-                                trailing: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    IconButton(
-                                      icon: const Icon(Icons.edit,
-                                          color: Colors.blue),
-                                      onPressed: () => _showSymptomDialog(
-                                          context,
-                                          index: entry.key,
-                                          initialValue: entry.value),
-                                    ),
-                                    IconButton(
-                                      icon: const Icon(Icons.delete,
-                                          color: Colors.redAccent),
-                                      onPressed: () => context
-                                          .read<SymptomsCubit>()
-                                          .deleteSymptom(entry.key),
-                                    ),
-                                  ],
-                                ),
+                        .map(
+                          (entry) => Card(
+                            margin: const EdgeInsets.only(bottom: 8),
+                            child: ListTile(
+                              leading: const Icon(
+                                Icons.bubble_chart,
+                                color: Colors.pinkAccent,
                               ),
-                            ))
+                              title: Text(entry.value),
+                              trailing: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  IconButton(
+                                    icon: const Icon(
+                                      Icons.edit,
+                                      color: Colors.blue,
+                                    ),
+                                    onPressed: () => _showSymptomDialog(
+                                      context,
+                                      index: entry.key,
+                                      initialValue: entry.value,
+                                    ),
+                                  ),
+                                  IconButton(
+                                    icon: const Icon(
+                                      Icons.delete,
+                                      color: Colors.redAccent,
+                                    ),
+                                    onPressed: () => context
+                                        .read<SymptomsCubit>()
+                                        .deleteSymptom(entry.key),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        )
                         .toList(),
                   );
                 },
@@ -221,9 +233,12 @@ class _HomeScreenState extends State<HomeScreen> {
           children: [
             const Icon(Icons.thermostat, color: Colors.blue),
             const SizedBox(width: 16),
-            Text('$_temperature°C',
-                style:
-                    const TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+            Text(
+              '$_temperature°C',
+              style:
+                  // ignore: lines_longer_than_80_chars
+                  const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+            ),
           ],
         ),
       );
@@ -232,9 +247,14 @@ class _HomeScreenState extends State<HomeScreen> {
         width: double.infinity,
         padding: const EdgeInsets.all(32),
         decoration: BoxDecoration(
-            color: Colors.pink[50], borderRadius: BorderRadius.circular(16)),
+          color: Colors.pink[50],
+          borderRadius: BorderRadius.circular(16),
+        ),
         child: const Center(
-            child: Text('День 12',
-                style: TextStyle(fontSize: 40, color: Colors.pink))),
+          child: Text(
+            'День 12',
+            style: TextStyle(fontSize: 40, color: Colors.pink),
+          ),
+        ),
       );
 }
